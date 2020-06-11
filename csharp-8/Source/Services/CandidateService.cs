@@ -31,16 +31,17 @@ namespace Codenation.Challenge.Services
 
         public Candidate Save(Candidate candidate)
         {
-            Candidate saveCandidate;
-            if (candidate.UserId.Equals(0) || candidate.AccelerationId.Equals(0) || candidate.CompanyId.Equals(0))
+            Candidate saveCandidate = candidate;
+            
+            // apos o teste vou apagar estas linhas
+            //if (candidate.UserId.Equals(0) || candidate.AccelerationId.Equals(0) || candidate.CompanyId.Equals(0))
+            if (!_context.Candidates.Any(x => x.UserId == candidate.UserId || x.AccelerationId == candidate.AccelerationId || x.CompanyId == candidate.CompanyId))
             {
                 _context.Candidates.Add(candidate);
-                saveCandidate = candidate;
             }
             else
             {
                 _context.Candidates.Update(candidate);
-                saveCandidate = candidate;
             }
             _context.SaveChanges();
             return saveCandidate;

@@ -36,17 +36,15 @@ namespace Codenation.Challenge.Services
 
         public User Save(User user)
         {
-            // Create
-            User modUser;
-            if (user.Id.Equals(0))
+            User modUser = user;
+            //   if (user.Id.Equals(0))
+            if (!_context.Users.Any(x => x.Id == user.Id))
             {
-                    _context.Users.Add(user);
-                modUser = user; 
+                _context.Users.Add(user);
             }
             else
             {
                 _context.Users.Update(user);
-                modUser = user;
             }
             _context.SaveChanges();
             return modUser;

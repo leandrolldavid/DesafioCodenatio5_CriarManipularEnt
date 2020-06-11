@@ -38,16 +38,16 @@ namespace Codenation.Challenge.Services
 
         public Company Save(Company company)
         {
-            Company saveCompany;
-            if (company.Id.Equals(0))
+            Company saveCompany = company;
+            // if (company.Id.Equals(0))
+            if (!_context.Companies.Any(x => x.Id == company.Id))
+
             {
                 _context.Companies.Add(company);
-                saveCompany = company;
             }
             else
             {
                 _context.Companies.Update(company);
-                saveCompany = company;
             }
             _context.SaveChanges();
             return saveCompany;

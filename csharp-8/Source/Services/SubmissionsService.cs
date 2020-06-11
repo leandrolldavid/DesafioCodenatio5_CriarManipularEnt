@@ -14,32 +14,32 @@ namespace Codenation.Challenge.Services
 
         public IList<Submission> FindByChallengeIdAndAccelerationId(int challengeId, int accelerationId)
         {
-            return (from tbU in _context.Users
-                    join tbC in _context.Candidates on tbU.Id equals tbC.UserId
+            return (from tbC in _context.Candidates
+                    join tbU in _context.Users on tbC.UserId equals tbU.Id
                     join tbS in _context.Submissions on tbU.Id equals tbS.UserId
                     where tbC.AccelerationId == accelerationId && tbS.ChallengeId == challengeId
                     select tbS).Distinct().ToList();
         }
 
         public decimal FindHigherScoreByChallengeId(int challengeId)
-        {
-            return  _context.Submissions.
-            Where(x => x.ChallengeId == challengeId).Max(x => x.Score);
+        {//edt
+            return _context.Submissions
+                .Where(x => x.ChallengeId == challengeId)
+                .OrderByDescending(x => x.ChallengeId)
+                .LastOrDefault().Score;
         }
 
         public Submission Save(Submission submission)
         {
-            Submission saveSubmission;
-            if (submission.ChallengeId.Equals(0) &&
-                submission.UserId.Equals(0))
-                {
+            Submission saveSubmission = submission;
+         // test   if (_context.Submissions.FirstOrDefault(x => x.UserId == submission.UserId || x.ChallengeId == submission.ChallengeId) == null)
+            if (!_context.Submissions.Any(x => x.UserId == submission.UserId || x.ChallengeId == submission.ChallengeId))
+            {
                 _context.Submissions.Add(submission);
-                saveSubmission = submission;
             }
             else
             {
                 _context.Submissions.Update(submission);
-                saveSubmission = submission;
             }
             _context.SaveChanges();
             return saveSubmission;

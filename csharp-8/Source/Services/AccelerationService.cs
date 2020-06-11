@@ -31,16 +31,15 @@ namespace Codenation.Challenge.Services
 
         public Acceleration Save(Acceleration acceleration)
         {
-            Acceleration resultAcceleration;
-            if (acceleration.Id.Equals(0))
+            Acceleration resultAcceleration = acceleration;
+           // if (acceleration.Id.Equals(0))
+             if(!_context.Accelerations.Any(x => x.Id == acceleration.Id))
             {
                 _context.Accelerations.Add(acceleration);
-                resultAcceleration = acceleration;
             }
             else
             {
                 _context.Accelerations.Update(acceleration);
-                resultAcceleration = acceleration;
             }
             _context.SaveChanges();
             return resultAcceleration;

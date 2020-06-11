@@ -22,16 +22,16 @@ namespace Codenation.Challenge.Services
 
         public Models.Challenge Save(Models.Challenge challenge)
         {
-            Models.Challenge saveChallenge;
-            if (challenge.Id.Equals(0))
+            Models.Challenge saveChallenge = challenge;
+            // if (challenge.Id.Equals(0))
+            if (!_context.Challenges.Any(x => x.Id == challenge.Id ))
+
             {
                 _context.Challenges.Add(challenge);
-                saveChallenge = challenge;
             }
             else
             {
                 _context.Challenges.Update(challenge);
-                saveChallenge = challenge;
             }
             _context.SaveChanges();
             return saveChallenge;
