@@ -22,7 +22,7 @@ namespace Codenation.Challenge.Services
         }
 
         public decimal FindHigherScoreByChallengeId(int challengeId)
-        {//edt
+        {
             return _context.Submissions
                 .Where(x => x.ChallengeId == challengeId)
                 .OrderByDescending(x => x.ChallengeId)
@@ -31,8 +31,6 @@ namespace Codenation.Challenge.Services
 
         public Submission Save(Submission submission)
         {
-            Submission saveSubmission = submission;
-         // test   if (_context.Submissions.FirstOrDefault(x => x.UserId == submission.UserId || x.ChallengeId == submission.ChallengeId) == null)
             if (!_context.Submissions.Any(x => x.UserId == submission.UserId || x.ChallengeId == submission.ChallengeId))
             {
                 _context.Submissions.Add(submission);
@@ -42,7 +40,7 @@ namespace Codenation.Challenge.Services
                 _context.Submissions.Update(submission);
             }
             _context.SaveChanges();
-            return saveSubmission;
+            return submission;
         }
     }
 }

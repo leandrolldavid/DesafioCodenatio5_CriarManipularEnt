@@ -26,25 +26,26 @@ namespace Codenation.Challenge.Services
 
         public Candidate FindById(int userId, int accelerationId, int companyId)
         {
-            return _context.Candidates.Where(x => x.UserId == userId && x.AccelerationId == accelerationId && x.CompanyId == companyId).FirstOrDefault();
+            return _context.Candidates
+                .Where(x => x.UserId == userId && x.AccelerationId == accelerationId && x.CompanyId == companyId)
+                .FirstOrDefault();
         }
 
         public Candidate Save(Candidate candidate)
         {
-            Candidate saveCandidate = candidate;
-            
-            // apos o teste vou apagar estas linhas
-            //if (candidate.UserId.Equals(0) || candidate.AccelerationId.Equals(0) || candidate.CompanyId.Equals(0))
-            if (!_context.Candidates.Any(x => x.UserId == candidate.UserId || x.AccelerationId == candidate.AccelerationId || x.CompanyId == candidate.CompanyId))
+            var resultCandidate = FindById(candidate.UserId, candidate.AccelerationId, candidate.CompanyId);
+
+            if (resultCandidate is null)
             {
                 _context.Candidates.Add(candidate);
             }
             else
             {
-                _context.Candidates.Update(candidate);
+                resultCandidate.Status = candidate.Status;
+                _context.Candidates.Update(resultCandidate);
             }
             _context.SaveChanges();
-            return saveCandidate;
+            return candidate;
         }
     }
 }

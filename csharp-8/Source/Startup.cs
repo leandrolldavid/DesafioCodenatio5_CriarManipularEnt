@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Codenation.Challenge.Models;
 
 namespace Source
@@ -36,7 +30,7 @@ namespace Source
             {
                 app.UseDeveloperExceptionPage();
             }
-
+            app.UseStaticFiles(); //sar os aquivos da pasta wwwroot . css, js,bootstrap, etc...Layalt
             app.UseMvc();
         }
     }

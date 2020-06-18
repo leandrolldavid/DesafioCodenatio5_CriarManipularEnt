@@ -36,18 +36,21 @@ namespace Codenation.Challenge.Services
 
         public User Save(User user)
         {
-            User modUser = user;
-            //   if (user.Id.Equals(0))
-            if (!_context.Users.Any(x => x.Id == user.Id))
+            var resultUser = FindById(user.Id);
+            if ( resultUser is null)
             {
                 _context.Users.Add(user);
             }
             else
             {
-                _context.Users.Update(user);
+                resultUser.FullName = user.FullName;
+                resultUser.Email = user.Email;
+                resultUser.Nickname = user.Nickname;
+                resultUser.Password = user.Password;
+                _context.Users.Update(resultUser);
             }
             _context.SaveChanges();
-            return modUser;
+            return user;
         }
     }
 }

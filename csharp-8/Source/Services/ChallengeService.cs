@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using Codenation.Challenge.Models;
-using Microsoft.AspNetCore.Identity.UI.V3.Pages.Internal.Account;
 
 namespace Codenation.Challenge.Services
 {
@@ -22,8 +21,6 @@ namespace Codenation.Challenge.Services
 
         public Models.Challenge Save(Models.Challenge challenge)
         {
-            Models.Challenge saveChallenge = challenge;
-            // if (challenge.Id.Equals(0))
             if (!_context.Challenges.Any(x => x.Id == challenge.Id ))
 
             {
@@ -34,7 +31,7 @@ namespace Codenation.Challenge.Services
                 _context.Challenges.Update(challenge);
             }
             _context.SaveChanges();
-            return saveChallenge;
+            return challenge;
         }
     }
 }

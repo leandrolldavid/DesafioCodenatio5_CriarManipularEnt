@@ -20,37 +20,31 @@ namespace Codenation.Challenge.Services
                     where tbCa.AccelerationId == accelerationId 
                     select tbCo
                 ).Distinct().ToList();
-
         }
-
         public Company FindById(int id)
         {
-           // return _context.Companies.Find(id);
             return _context.Companies.Where(x => x.Id == id).FirstOrDefault();
-
         }
-
         public IList<Company> FindByUserId(int userId)
         {
             return _context.Candidates.Where(x => x.UserId == userId)
                 .Select(x => x.Company).Distinct().ToList();
         }
-
         public Company Save(Company company)
         {
-            Company saveCompany = company;
-            // if (company.Id.Equals(0))
-            if (!_context.Companies.Any(x => x.Id == company.Id))
-
+            var resultCompany = FindById(company.Id);
+            if (resultCompany is null)
             {
                 _context.Companies.Add(company);
             }
             else
             {
-                _context.Companies.Update(company);
+                resultCompany.Name = company.Name;
+                resultCompany.Slug = company.Slug;
+                _context.Companies.Update(resultCompany);
             }
             _context.SaveChanges();
-            return saveCompany;
+            return company;
         }
     }
 }

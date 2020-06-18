@@ -1,7 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text.RegularExpressions;
 using Codenation.Challenge.Models;
 
 namespace Codenation.Challenge.Services
@@ -25,24 +23,24 @@ namespace Codenation.Challenge.Services
 
         public Acceleration FindById(int id)
         {
-            return _context.Accelerations.Where(x => x.Id == id).FirstOrDefault();
+           return _context.Accelerations.Where(x => x.Id == id).FirstOrDefault();
 
         }
-
         public Acceleration Save(Acceleration acceleration)
         {
-            Acceleration resultAcceleration = acceleration;
-           // if (acceleration.Id.Equals(0))
-             if(!_context.Accelerations.Any(x => x.Id == acceleration.Id))
+            var resultAcceleration = FindById(acceleration.Id);
+             if (resultAcceleration is null)
             {
                 _context.Accelerations.Add(acceleration);
             }
             else
             {
-                _context.Accelerations.Update(acceleration);
+                resultAcceleration.Name = acceleration.Name;
+                resultAcceleration.Slug = acceleration.Slug;
+                _context.Accelerations.Update(resultAcceleration);
             }
             _context.SaveChanges();
-            return resultAcceleration;
+            return acceleration;
         }
     }
 }
